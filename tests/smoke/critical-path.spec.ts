@@ -27,15 +27,12 @@ test.describe(`${TEST_TAGS.SMOKE} Critical Path`, () => {
     expect(Array.isArray(result.data)).toBeTruthy();
   });
 
-  test('recruiter can open a candidate profile from the list', async ({
-    page,
-    candidatesListPage,
-  }) => {
-    await page.goto(ROUTES.DASHBOARD);
-    await page.getByTestId('nav-candidates').click();
+  test('recruiter can open a candidate profile from the list', async ({ page }) => {
+    await page.goto(ROUTES.CANDIDATES);
     await expect(page).toHaveURL(/candidates/);
 
     const firstRow = page.getByTestId('candidate-row').first();
+    await expect(firstRow).toBeVisible();
     const name = await firstRow.getByTestId('candidate-name').innerText();
     await firstRow.click();
 

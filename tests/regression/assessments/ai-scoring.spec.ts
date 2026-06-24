@@ -63,19 +63,9 @@ test.describe(`${TEST_TAGS.REGRESSION} ${TEST_TAGS.AI} NLP and Scoring`, () => {
     const screened = result.data.find((c: { status: string }) => c.status === 'screening');
     test.skip(!screened, 'No screened candidate in staging dataset');
 
-    test('NLP parse API returns skills and confidence score', async ({ candidatesApi }) => {
-      const result = await candidatesApi.listCandidates();
-      const screened = result.data.find((c: { status: string }) => c.status === 'screening');
-
-      if (!screened) {
-        test.skip(true, 'No screened candidate in staging dataset');
-        return;
-      }
-
-      const nlpResult = await candidatesApi.getNLPParseResult(screened.id);
-      expect(Array.isArray(nlpResult.skills)).toBeTruthy();
-      expect(nlpResult.confidence).toBeGreaterThanOrEqual(0);
-      expect(nlpResult.confidence).toBeLessThanOrEqual(1);
-    });
+    const nlpResult = await candidatesApi.getNLPParseResult(screened.id);
+    expect(Array.isArray(nlpResult.skills)).toBeTruthy();
+    expect(nlpResult.confidence).toBeGreaterThanOrEqual(0);
+    expect(nlpResult.confidence).toBeLessThanOrEqual(1);
   });
 });
