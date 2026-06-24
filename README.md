@@ -1,4 +1,4 @@
-# hiresync-e2e
+# candidate screening platform-e2e
 
 Playwright + TypeScript test suite for a candidate screening and hiring platform. Covers the candidate hiring pipeline,
 NLP scoring features, and the REST API layer.
@@ -131,7 +131,7 @@ Opens the Allure report locally. CI publishes results as artifacts after each ru
 
 ## Notes
 
-NLP confidence scores and competency scores from hiresync's AI features are non-deterministic.
+NLP confidence scores and competency scores from candidate screening platform's AI features are non-deterministic.
 Tests in `tests/regression/assessments/` check ranges and thresholds rather than exact values
 for this reason.
 
