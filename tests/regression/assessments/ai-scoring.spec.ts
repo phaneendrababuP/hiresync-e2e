@@ -16,9 +16,7 @@ test.describe(`${TEST_TAGS.REGRESSION} ${TEST_TAGS.AI} NLP and Scoring`, () => {
       await page.getByTestId('candidate-row').first().click();
     });
 
-    test('NLP confidence score meets the minimum threshold', async ({
-      candidateDetailPage,
-    }) => {
+    test('NLP confidence score meets the minimum threshold', async ({ candidateDetailPage }) => {
       const confidence = await candidateDetailPage.getNLPConfidenceScore();
       expect(confidence).toBeGreaterThanOrEqual(AI_CONFIDENCE_THRESHOLDS.MEDIUM);
     });
@@ -52,10 +50,7 @@ test.describe(`${TEST_TAGS.REGRESSION} ${TEST_TAGS.AI} NLP and Scoring`, () => {
       expect(score).toBeLessThanOrEqual(100);
     });
 
-    test('Big5 psychometric chart renders after assessment completion', async ({
-      candidateDetailPage,
-      page,
-    }) => {
+    test('Big5 psychometric chart renders after assessment completion', async ({ page }) => {
       await expect(page.getByTestId('psychometric-section')).toBeVisible();
       await expect(page.getByTestId('big5-chart').locator('svg path').first()).toBeVisible({
         timeout: 45_000,
@@ -68,11 +63,19 @@ test.describe(`${TEST_TAGS.REGRESSION} ${TEST_TAGS.AI} NLP and Scoring`, () => {
     const screened = result.data.find((c: { status: string }) => c.status === 'screening');
     test.skip(!screened, 'No screened candidate in staging dataset');
 
-    if (screened?.id) {
+    test('NLP parse API returns skills and confidence score', async ({ candidatesApi }) => {
+      const result = await candidatesApi.listCandidates();
+      const screened = result.data.find((c: { status: string }) => c.status === 'screening');
+
+      if (!screened) {
+        test.skip(true, 'No screened candidate in staging dataset');
+        return;
+      }
+
       const nlpResult = await candidatesApi.getNLPParseResult(screened.id);
       expect(Array.isArray(nlpResult.skills)).toBeTruthy();
       expect(nlpResult.confidence).toBeGreaterThanOrEqual(0);
       expect(nlpResult.confidence).toBeLessThanOrEqual(1);
-    }
+    });
   });
 });

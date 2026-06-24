@@ -16,9 +16,9 @@ test.describe(`${TEST_TAGS.SMOKE} Critical Path`, () => {
     expect(count).toBeGreaterThan(0);
   });
 
-  test('jobs list page loads', async ({ jobsListPage }) => {
-    // navigate() internally waits for the jobs table to be visible
+  test('jobs list page loads', async ({ jobsListPage, page }) => {
     await jobsListPage.navigate();
+    await expect(page.getByTestId('jobs-table')).toBeVisible();
   });
 
   test('candidates API returns a valid response', async ({ candidatesApi }) => {
