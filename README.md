@@ -1,6 +1,6 @@
 # hiresync-e2e
 
-Playwright + TypeScript test suite for hiresync. Covers the candidate hiring pipeline,
+Playwright + TypeScript test suite for a candidate screening and hiring platform. Covers the candidate hiring pipeline,
 NLP scoring features, and the REST API layer.
 
 Started this as a set of standalone spec files and gradually pulled shared logic into
