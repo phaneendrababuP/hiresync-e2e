@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Playwright output
+test-results/
+playwright-report/
+
+# Allure
+allure-results/
+allure-report/
+allure-history/
+
+# Auth state — generated per run, never committed
+.auth/
+
+# Environment files — never commit real credentials
+env/.env.dev
+env/.env.staging
+env/.env.prod
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+
+# Logs
+*.log
+logs/

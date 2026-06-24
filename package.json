@@ -1,0 +1,46 @@
+{
+  "name": "psyhire-e2e",
+  "version": "0.4.0",
+  "description": "Playwright automation suite for PsyHire \u2014 candidate screening and hiring platform",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:regression": "playwright test --grep @regression",
+    "test:api": "playwright test tests/api/",
+    "test:ui": "playwright test tests/regression/ tests/smoke/",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui-mode": "playwright test --ui",
+    "test:report": "allure generate allure-results --clean -o allure-report && allure open allure-report",
+    "test:ci:smoke": "playwright test --grep @smoke --reporter=allure-playwright,line",
+    "test:ci:regression": "playwright test --grep @regression --reporter=allure-playwright,line",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write .",
+    "type-check": "tsc --noEmit",
+    "auth:setup": "playwright test --project=auth-setup",
+    "clean": "rm -rf allure-results allure-report test-results playwright-report"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.12.0",
+    "allure-playwright": "^3.0.0",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.4.5",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-playwright": "^1.6.2",
+    "prettier": "^3.2.5",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}
