@@ -22,7 +22,7 @@ test.describe(`${TEST_TAGS.REGRESSION} ${TEST_TAGS.AUTH} Login`, () => {
   });
 
   test('unknown email shows error message', async ({ loginPage, page }) => {
-    await loginPage.login('nobody@psyhire.test', 'somepass');
+    await loginPage.login('nobody@hiresync.test', 'somepass');
     await expect(page.getByTestId('login-error-banner')).toBeVisible();
   });
 

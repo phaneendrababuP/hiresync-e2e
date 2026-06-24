@@ -1,6 +1,6 @@
-# psyhire-e2e
+# hiresync-e2e
 
-Playwright + TypeScript test suite for PsyHire. Covers the candidate hiring pipeline,
+Playwright + TypeScript test suite for hiresync. Covers the candidate hiring pipeline,
 NLP scoring features, and the REST API layer.
 
 Started this as a set of standalone spec files and gradually pulled shared logic into
@@ -131,7 +131,7 @@ Opens the Allure report locally. CI publishes results as artifacts after each ru
 
 ## Notes
 
-NLP confidence scores and competency scores from PsyHire's AI features are non-deterministic.
+NLP confidence scores and competency scores from hiresync's AI features are non-deterministic.
 Tests in `tests/regression/assessments/` check ranges and thresholds rather than exact values
 for this reason.
 

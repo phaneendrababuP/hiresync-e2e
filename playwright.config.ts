@@ -7,7 +7,7 @@ import path from 'path';
 const environment = process.env.ENV || 'staging';
 dotenv.config({ path: path.resolve(__dirname, `env/.env.${environment}`) });
 
-const BASE_URL = process.env.BASE_URL || 'https://staging.psyhire.com';
+const BASE_URL = process.env.BASE_URL || 'https://staging.hiresync.com';
 
 export default defineConfig({
   testDir: './tests',
@@ -26,10 +26,7 @@ export default defineConfig({
         ['line'],
         ['json', { outputFile: 'test-results/results.json' }],
       ]
-    : [
-        ['html', { open: 'never', outputFolder: 'playwright-report' }],
-        ['line'],
-      ],
+    : [['html', { open: 'never', outputFolder: 'playwright-report' }], ['line']],
 
   use: {
     baseURL: BASE_URL,

@@ -14,7 +14,7 @@ export function randomLastName(): string {
 
 export function randomEmail(prefix = 'qa'): string {
   const suffix = `${Date.now()}${Math.random().toString(36).substring(2, 6)}`;
-  return `${prefix}.${suffix}@psyhire.test`;
+  return `${prefix}.${suffix}@hiresync.test`;
 }
 
 export function randomPhone(): string {

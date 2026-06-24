@@ -19,7 +19,7 @@ test.describe(`${TEST_TAGS.API} ${TEST_TAGS.AUTH} Auth API`, () => {
   });
 
   test('login with unknown email returns 401', async ({ authApi }) => {
-    const status = await authApi.loginGetStatus('nobody@psyhire.test', 'somepass');
+    const status = await authApi.loginGetStatus('nobody@hiresync.test', 'somepass');
     expect(status).toBe(401);
   });
 

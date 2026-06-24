@@ -1,7 +1,7 @@
 {
-  "name": "psyhire-e2e",
+  "name": "hiresync-e2e",
   "version": "0.4.0",
-  "description": "Playwright automation suite for PsyHire \u2014 candidate screening and hiring platform",
+  "description": "Playwright automation suite for hiresync — candidate screening and hiring platform",
   "private": true,
   "scripts": {
     "test": "playwright test",

@@ -1,4 +1,4 @@
-name: psyhire-e2e
+name: hiresync-e2e
 
 on:
   push:
