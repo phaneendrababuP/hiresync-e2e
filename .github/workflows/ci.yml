@@ -1,0 +1,119 @@
+name: psyhire-e2e
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run against'
+        required: false
+        default: 'staging'
+        type: choice
+        options: [staging, dev]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run type-check
+
+  smoke:
+    runs-on: ubuntu-latest
+    needs: lint
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Write env file
+        run: |
+          mkdir -p env
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> env/.env.staging
+          echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" >> env/.env.staging
+          echo "ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}" >> env/.env.staging
+          echo "ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> env/.env.staging
+
+      - name: Run smoke tests
+        run: npm run test:ci:smoke
+        env:
+          CI: true
+          ENV: ${{ github.event.inputs.environment || 'staging' }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-results-${{ github.run_number }}
+          path: allure-results/
+          retention-days: 7
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: smoke-failure-${{ github.run_number }}
+          path: test-results/
+          retention-days: 3
+
+  regression:
+    runs-on: ubuntu-latest
+    needs: smoke
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Write env file
+        run: |
+          mkdir -p env
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> env/.env.staging
+          echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" >> env/.env.staging
+          echo "ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}" >> env/.env.staging
+          echo "ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> env/.env.staging
+
+      - name: Run regression tests
+        run: npm run test:ci:regression
+        env:
+          CI: true
+          ENV: staging
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: regression-results-${{ github.run_number }}
+          path: allure-results/
+          retention-days: 14
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: regression-failure-${{ github.run_number }}
+          path: test-results/
+          retention-days: 7
